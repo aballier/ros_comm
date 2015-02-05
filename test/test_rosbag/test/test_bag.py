@@ -72,7 +72,7 @@ class TestRosbag(unittest.TestCase):
         def fn1(): rosbag.Bag('')
         def fn2(): rosbag.Bag(None)
         def fn3(): rosbag.Bag(f, 'z')        
-        def fn4(): rosbag.Bag(f, 'r', compression='foobar')
+        def fn4(): rosbag.Bag(f, 'r', compression=b'foobar')
         def fn5(): rosbag.Bag(f, 'r', chunk_threshold=-1000)
         for fn in [fn1, fn2, fn3, fn4, fn5]:
             self.failUnlessRaises(ValueError, fn)

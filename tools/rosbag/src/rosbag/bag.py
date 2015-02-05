@@ -92,9 +92,9 @@ class Compression:
     """
     Allowable compression types
     """
-    NONE = 'none'
-    BZ2  = 'bz2'
-    LZ4  = 'lz4'
+    NONE = b'none'
+    BZ2  = b'bz2'
+    LZ4  = b'lz4'
 
 class Bag(object):
     """
@@ -139,7 +139,7 @@ class Bag(object):
 
         allowed_compressions = [Compression.NONE, Compression.BZ2, Compression.LZ4]
         if compression not in allowed_compressions:
-            raise ValueError('compression must be one of: %s' % ', '.join(allowed_compressions))  
+            raise ValueError('compression must be one of: %s' % ', '.join(map(lambda x: x.decode(), allowed_compressions)))
         self._compression = compression      
 
         if chunk_threshold < 0:
@@ -214,7 +214,7 @@ class Bag(object):
         """Set the compression method to use for writing."""
         allowed_compressions = [Compression.NONE, Compression.BZ2, Compression.LZ4]
         if compression not in allowed_compressions:
-            raise ValueError('compression must be one of: %s' % ', '.join(allowed_compressions))        
+            raise ValueError('compression must be one of: %s' % ', '.join(map(lambda x: x.decode(), allowed_compressions)))
         
         self.flush()
         self._compression = compression
@@ -440,7 +440,7 @@ class Bag(object):
             chunk_count = len(self._chunk_headers)
 
             main_compression_count, main_compression = sorted([(v, k) for k, v in compression_counts.items()], reverse=True)[0]
-            compression = str(main_compression)
+            compression = main_compression
 
         return collections.namedtuple("CompressionTuple", ["compression",
                                                            "uncompressed", "compressed"])(compression=compression,
