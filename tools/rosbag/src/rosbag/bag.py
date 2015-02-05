@@ -1435,10 +1435,16 @@ class _ConnectionInfo(object):
             raise ROSBagFormatException('connection header field %s not found' % str(ex))
 
         self.id       = id
-        self.topic    = topic
-        self.datatype = datatype
-        self.md5sum   = md5sum
-        self.msg_def  = msg_def
+        if sys.hexversion > 0x03000000 and hasattr(topic, 'decode'): #Python3
+            self.topic    = topic.decode()
+            self.datatype = datatype.decode()
+            self.md5sum   = md5sum.decode()
+            self.msg_def  = msg_def.decode()
+        else:
+            self.topic    = topic
+            self.datatype = datatype
+            self.md5sum   = md5sum
+            self.msg_def  = msg_def
         self.header   = header
 
     def __str__(self):
