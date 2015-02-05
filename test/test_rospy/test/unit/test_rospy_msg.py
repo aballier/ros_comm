@@ -44,6 +44,13 @@ import random
 
 import genpy
 
+if sys.version > '3':
+    def bconv(x):
+        return bytes(x, 'utf-8')
+else:
+    def bconv(x):
+        return x
+
 class TestRospyMsg(unittest.TestCase):
 
     def test_args_kwds_to_message(self):
@@ -78,7 +85,7 @@ class TestRospyMsg(unittest.TestCase):
         from test_rospy.msg import Val
 
         #serialize a simple 'Val' with a string in it
-        teststr = 'foostr-%s'%time.time()
+        teststr = bconv('foostr-%s'%time.time())
         val = Val(teststr)
 
         fmt = "<II%ss"%len(teststr)
@@ -133,7 +140,7 @@ class TestRospyMsg(unittest.TestCase):
         import rospy.msg
         from test_rospy.msg import Val
         num_tests = 10
-        teststrs = ['foostr-%s'%random.randint(0, 10000) for i in range(0, num_tests)]
+        teststrs = [bconv('foostr-%s'%random.randint(0, 10000)) for i in range(0, num_tests)]
         valids = []
         for t in teststrs:
             fmt = "<II%ss"%len(t)
