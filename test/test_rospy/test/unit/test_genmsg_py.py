@@ -44,6 +44,9 @@ import random
 import math
 
 from roslib.message import SerializationError
+
+if sys.version > '3':
+    long = int
         
 class TestGenmsgPy(unittest.TestCase):
 
